@@ -2,19 +2,18 @@
 %define debug_package %{nil}
 
 Name:     nailgun
-Version:  0.7.1
-Release:  9.0%{?dist}
+Version:  0.9.1
+Release:  1.1
 Summary:  Framework for running Java from the cli without the JVM startup overhead
 
 License:  ASL 2.0
 URL:      http://martiansoftware.com/nailgun/
-Source0:  http://downloads.sourceforge.net/project/nailgun/nailgun/0.7.1/nailgun-src-0.7.1.zip
+Source0:  https://github.com/martylamb/nailgun/archive/nailgun-all-%{version}.zip
 Patch0:   remove-tools-jar-dependencies.patch
 
 BuildRequires: java-devel
 BuildRequires:  jpackage-utils
-BuildRequires: ant
-BuildRequires: ant-junit
+BuildRequires: maven-local
 Requires: java
 Requires:  jpackage-utils
 
@@ -33,38 +32,21 @@ BuildArch:      noarch
 This package contains the API documentation for %{name}.
 
 %prep
-%setup -q
-%patch0 -p1
+%setup -q -n %{name}-%{name}-all-%{version}
 
 find ./ -name '*.jar' -exec rm -f '{}' \; 
 find ./ -name '*.class' -exec rm -f '{}' \; 
 
 %build
-ant
+%mvn_build
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{_javadir}
-mkdir -p $RPM_BUILD_ROOT%{_bindir}
+%mvn_install
 
-cp dist/nailgun-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}.jar
+%files -f .mfiles
+%doc README.md
 
-cp ng $RPM_BUILD_ROOT%{_bindir}/ng
-
-mkdir -p $RPM_BUILD_ROOT%{_javadocdir}/%{name}
-cp -rp docs/api/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-%files
-%{_javadir}/nailgun.jar
-%{_bindir}/ng
-%doc LICENSE.txt README.txt
-
-%files javadoc
-%{_javadocdir}/%{name}
-%doc LICENSE.txt
+%files javadoc -f .mfiles-javadoc
 
 %changelog
 * Mon Sep 02 2013 Mat Booth <fedora@matbooth.co.uk> - 0.7.1-9
