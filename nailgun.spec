@@ -3,7 +3,7 @@
 
 Name:     nailgun
 Version:  0.9.1
-Release:  1.1
+Release:  1.2
 Summary:  Framework for running Java from the cli without the JVM startup overhead
 
 License:  ASL 2.0
