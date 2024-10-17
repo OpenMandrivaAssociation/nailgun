@@ -7,7 +7,7 @@ Release:  1.2
 Summary:  Framework for running Java from the cli without the JVM startup overhead
 
 License:  ASL 2.0
-URL:      http://martiansoftware.com/nailgun/
+URL:      https://martiansoftware.com/nailgun/
 Source0:  https://github.com/martylamb/nailgun/archive/nailgun-all-%{version}.zip
 Patch0:   remove-tools-jar-dependencies.patch
 
